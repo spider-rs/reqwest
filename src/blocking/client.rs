@@ -428,6 +428,19 @@ impl ClientBuilder {
         self.with_inner(move |inner| inner.pool_max_idle_per_host(max))
     }
 
+
+    /// Set whether to automatically add the `Host` header to requests.
+    ///
+    /// If true, and a request does not include a `Host` header, one will be
+    /// added automatically, derived from the authority of the `Uri`.
+    ///
+    /// Default is `true`.
+    #[inline]
+    pub fn set_host(&mut self, val: bool) -> &mut Self {
+        self.with_inner(move |inner| inner.set_host(val))
+    }
+
+
     /// Preserve the header order.
     pub fn http1_preserve_header_order(self, enabled: bool) -> ClientBuilder {
         self.with_inner(move |inner| inner.http1_preserve_header_order(enabled))

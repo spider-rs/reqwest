@@ -159,6 +159,7 @@ struct Config {
     http2_keep_alive_timeout: Option<Duration>,
     #[cfg(feature = "http2")]
     http2_keep_alive_while_idle: bool,
+    set_host: bool,
     local_address: Option<IpAddr>,
     #[cfg(any(
         target_os = "android",
@@ -236,6 +237,7 @@ impl ClientBuilder {
                 redirect_policy: redirect::Policy::default(),
                 referer: true,
                 read_timeout: None,
+                set_host: true,
                 timeout: None,
                 #[cfg(feature = "__tls")]
                 root_certs: Vec::new(),
@@ -867,6 +869,7 @@ impl ClientBuilder {
         builder.pool_timer(hyper_util::rt::TokioTimer::new());
         builder.pool_idle_timeout(config.pool_idle_timeout);
         builder.pool_max_idle_per_host(config.pool_max_idle_per_host);
+        builder.set_host(config.set_host);
 
         if config.http1_preserve_header_case {
             builder.http1_preserve_header_case(true);
@@ -1486,6 +1489,16 @@ impl ClientBuilder {
         self.config.http2_keep_alive_while_idle = enabled;
         self
     }
+
+    /// Sets whether to set the hostname.
+    /// Default is `false`.
+    #[cfg(feature = "http2")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "http2")))]
+    pub fn set_host(mut self, enabled: bool) -> ClientBuilder {
+        self.config.set_host = enabled;
+        self
+    }
+
 
     // TCP options
 
