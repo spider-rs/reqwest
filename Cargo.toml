@@ -1,5 +1,5 @@
 [package]
-name = "reqwest"
+name = "reqwest-spider"
 version = "0.12.15"
 description = "higher level HTTP client library"
 keywords = ["http", "request", "client"]
@@ -12,6 +12,9 @@ license = "MIT OR Apache-2.0"
 edition = "2021"
 rust-version = "1.64.0"
 autotests = true
+
+[lib]
+name = "reqwest"
 
 [package.metadata.docs.rs]
 all-features = true
@@ -31,13 +34,13 @@ default = ["default-tls", "charset", "http2", "macos-system-configuration"]
 
 # Note: this doesn't enable the 'native-tls' feature, which adds specific
 # functionality for it.
-default-tls = ["dep:hyper-tls", "dep:native-tls-crate", "__tls", "dep:tokio-native-tls"]
+default-tls = ["dep:hyper-tls-spider", "dep:native-tls-crate", "__tls", "dep:tokio-native-tls"]
 
-http2 = ["h2", "hyper/http2", "hyper-util/http2", "hyper-rustls?/http2"]
+http2 = ["h2", "hyper-spider/http2", "hyper-util-spider/http2", "hyper-rustls?/http2"]
 
 # Enables native-tls specific functionality not available by default.
 native-tls = ["default-tls"]
-native-tls-alpn = ["native-tls", "native-tls-crate?/alpn", "hyper-tls?/alpn"]
+native-tls-alpn = ["native-tls", "native-tls-crate?/alpn", "hyper-tls-spider?/alpn"]
 native-tls-vendored = ["native-tls", "native-tls-crate?/vendored"]
 
 rustls-tls = ["rustls-tls-webpki-roots"]
@@ -118,8 +121,8 @@ mime_guess = { version = "2.0", default-features = false, optional = true }
 encoding_rs = { version = "0.8", optional = true }
 http-body = "1"
 http-body-util = "0.1"
-hyper = { version = "1.1", features = ["http1", "client"] }
-hyper-util = { version = "0.1.11", features = ["http1", "client", "client-legacy", "tokio"] }
+hyper-spider = { version = "1.6", features = ["http1", "client"] }
+hyper-util-spider = { version = "0.1.13", features = ["http1", "client", "client-legacy", "tokio"] }
 h2 = { version = "0.4", optional = true }
 once_cell = "1.18"
 log = "0.4.17"
@@ -134,7 +137,7 @@ ipnet = "2.3"
 rustls-pemfile = { version = "2", optional = true }
 
 ## default-tls
-hyper-tls = { version = "0.6", optional = true }
+hyper-tls-spider = { version = "0.6", optional = true }
 native-tls-crate = { version = "0.2.10", optional = true, package = "native-tls" }
 tokio-native-tls = { version = "0.3.0", optional = true }
 
@@ -169,8 +172,8 @@ futures-channel = { version = "0.3", optional = true }
 
 [target.'cfg(not(target_arch = "wasm32"))'.dev-dependencies]
 env_logger = "0.10"
-hyper = { version = "1.1.0", default-features = false, features = ["http1", "http2", "client", "server"] }
-hyper-util = { version = "0.1.10", features = ["http1", "http2", "client", "client-legacy", "server-auto", "tokio"] }
+hyper-spider = { version = "1.6.0", default-features = false, features = ["http1", "http2", "client", "server"] }
+hyper-util-spider = { version = "0.1.13", features = ["http1", "http2", "client", "client-legacy", "server-auto", "tokio"] }
 serde = { version = "1.0", features = ["derive"] }
 flate2 = "1.0.13"
 brotli_crate = { package = "brotli", version = "7.0.0" }

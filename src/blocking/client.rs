@@ -428,6 +428,11 @@ impl ClientBuilder {
         self.with_inner(move |inner| inner.pool_max_idle_per_host(max))
     }
 
+    /// Preserve the header order.
+    pub fn http1_preserve_header_order(self, enabled: bool) -> ClientBuilder {
+        self.with_inner(move |inner| inner.http1_preserve_header_order(enabled))
+    }
+
     /// Send headers as title case instead of lowercase.
     pub fn http1_title_case_headers(self) -> ClientBuilder {
         self.with_inner(|inner| inner.http1_title_case_headers())

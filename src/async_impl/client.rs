@@ -137,7 +137,9 @@ struct Config {
     connector_layers: Vec<BoxedConnectorLayer>,
     http_version_pref: HttpVersionPref,
     http09_responses: bool,
+    http1_preserve_header_case: bool,
     http1_title_case_headers: bool,
+    http1_preserve_header_order: bool,
     http1_allow_obsolete_multiline_headers_in_responses: bool,
     http1_ignore_invalid_headers_in_responses: bool,
     http1_allow_spaces_after_header_name_in_responses: bool,
@@ -258,7 +260,9 @@ impl ClientBuilder {
                 connector_layers: Vec::new(),
                 http_version_pref: HttpVersionPref::All,
                 http09_responses: false,
+                http1_preserve_header_case: true,
                 http1_title_case_headers: false,
+                http1_preserve_header_order: false,
                 http1_allow_obsolete_multiline_headers_in_responses: false,
                 http1_ignore_invalid_headers_in_responses: false,
                 http1_allow_spaces_after_header_name_in_responses: false,
@@ -864,6 +868,14 @@ impl ClientBuilder {
         builder.pool_idle_timeout(config.pool_idle_timeout);
         builder.pool_max_idle_per_host(config.pool_max_idle_per_host);
 
+        if config.http1_preserve_header_case {
+            builder.http1_preserve_header_case(true);
+        }
+
+        if config.http1_preserve_header_order {
+            builder.http1_preserve_header_order(true);
+        }
+        
         if config.http09_responses {
             builder.http09_responses(true);
         }
@@ -1305,6 +1317,18 @@ impl ClientBuilder {
     /// Send headers as title case instead of lowercase.
     pub fn http1_title_case_headers(mut self) -> ClientBuilder {
         self.config.http1_title_case_headers = true;
+        self
+    }
+
+    /// Send headers preserved case.
+    pub fn http1_preserve_header_case(mut self) -> ClientBuilder {
+        self.config.http1_preserve_header_case = true;
+        self
+    }
+
+    /// Send headers preserved order.
+    pub fn http1_preserve_header_order(mut self) -> ClientBuilder {
+        self.config.http1_preserve_header_order = true;
         self
     }
 
@@ -2489,6 +2513,10 @@ impl Config {
 
         if self.http1_title_case_headers {
             f.field("http1_title_case_headers", &true);
+        }
+
+        if self.http1_preserve_header_case {
+            f.field("http1_preserve_header_case", &true);
         }
 
         if self.http1_allow_obsolete_multiline_headers_in_responses {
