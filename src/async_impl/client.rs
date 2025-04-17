@@ -540,7 +540,7 @@ impl ClientBuilder {
                     proxies.clone(),
                     user_agent(&config.headers),
                     config.local_address,
-                    #[cfg(any(target_os = "android", target_os = "fuchsia", target_os = "linux"))]
+                    #[cfg(any(feature ="native-tls-alpn", target_os = "android", target_os = "fuchsia", target_os = "linux"))]
                     config.interface.as_deref(),
                     config.nodelay,
                     config.tls_info,
