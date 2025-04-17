@@ -1,6 +1,6 @@
 [package]
 name = "reqwest-spider"
-version = "0.12.15"
+version = "0.12.16"
 description = "higher level HTTP client library"
 keywords = ["http", "request", "client"]
 categories = ["web-programming::http-client", "wasm"]
@@ -36,7 +36,7 @@ default = ["default-tls", "charset", "http2", "macos-system-configuration"]
 # functionality for it.
 default-tls = ["dep:hyper-tls-spider", "dep:native-tls-crate", "__tls", "dep:tokio-native-tls"]
 
-http2 = ["h2", "hyper-spider/http2", "hyper-util-spider/http2", "hyper-rustls?/http2"]
+http2 = ["h2", "hyper-spider/http2", "hyper-util-spider/http2", "hyper-rustls-spider?/http2"]
 
 # Enables native-tls specific functionality not available by default.
 native-tls = ["default-tls"]
@@ -47,8 +47,8 @@ rustls-tls = ["rustls-tls-webpki-roots"]
 rustls-tls-no-provider = ["rustls-tls-manual-roots-no-provider"]
 
 rustls-tls-manual-roots-no-provider = ["__rustls"]
-rustls-tls-webpki-roots-no-provider = ["dep:webpki-roots", "hyper-rustls?/webpki-tokio", "__rustls"]
-rustls-tls-native-roots-no-provider = ["dep:rustls-native-certs", "hyper-rustls?/native-tokio", "__rustls"]
+rustls-tls-webpki-roots-no-provider = ["dep:webpki-roots", "hyper-rustls-spider?/webpki-tokio", "__rustls"]
+rustls-tls-native-roots-no-provider = ["dep:rustls-native-certs", "hyper-rustls-spider?/native-tokio", "__rustls"]
 
 rustls-tls-manual-roots = ["rustls-tls-manual-roots-no-provider", "__rustls-ring"]
 rustls-tls-webpki-roots = ["rustls-tls-webpki-roots-no-provider", "__rustls-ring"]
@@ -95,8 +95,8 @@ __tls = ["dep:rustls-pemfile", "tokio/io-util"]
 
 # Enables common rustls code.
 # Equivalent to rustls-tls-manual-roots but shorter :)
-__rustls = ["dep:hyper-rustls", "dep:tokio-rustls", "dep:rustls", "__tls", "dep:rustls-pemfile", "dep:rustls-pki-types"]
-__rustls-ring = ["hyper-rustls?/ring", "tokio-rustls?/ring", "rustls?/ring", "quinn?/ring"]
+__rustls = ["dep:hyper-rustls-spider", "dep:tokio-rustls", "dep:rustls", "__tls", "dep:rustls-pemfile", "dep:rustls-pki-types"]
+__rustls-ring = ["hyper-rustls-spider?/ring", "tokio-rustls?/ring", "rustls?/ring", "quinn?/ring"]
 
 [dependencies]
 base64 = "0.22"
@@ -142,7 +142,7 @@ native-tls-crate = { version = "0.2.10", optional = true, package = "native-tls"
 tokio-native-tls = { version = "0.3.0", optional = true }
 
 # rustls-tls
-hyper-rustls = { version = "0.27.0", default-features = false, optional = true, features = ["http1", "tls12"] }
+hyper-rustls-spider = { version = "0.27.0", default-features = false, optional = true, features = ["http1", "tls12"] }
 rustls = { version = "0.23.4", optional = true, default-features = false, features = ["std", "tls12"] }
 rustls-pki-types = { version = "1.1.0", features = ["alloc"] ,optional = true }
 tokio-rustls = { version = "0.26", optional = true, default-features = false, features = ["tls12"] }
