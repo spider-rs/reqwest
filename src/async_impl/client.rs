@@ -995,6 +995,34 @@ impl ClientBuilder {
         self
     }
 
+    /// Sets the default headers for every request.
+    ///
+    /// # Example
+    ///
+    /// ```rust
+    /// use reqwest::header;
+    /// # async fn doc() -> Result<(), reqwest::Error> {
+    /// let mut headers = header::HeaderMap::new();
+    /// headers.insert("X-MY-HEADER", header::HeaderValue::from_static("value"));
+    ///
+    /// // Consider marking security-sensitive headers with `set_sensitive`.
+    /// let mut auth_value = header::HeaderValue::from_static("secret");
+    /// auth_value.set_sensitive(true);
+    /// headers.insert(header::AUTHORIZATION, auth_value);
+    ///
+    /// // get a client builder
+    /// let client = reqwest::Client::builder()
+    ///     .default_headers(headers)
+    ///     .build()?;
+    /// let res = client.get("https://www.rust-lang.org").send().await?;
+    /// # Ok(())
+    /// # }
+    /// ```
+    pub fn set_default_headers(mut self, headers: HeaderMap) -> ClientBuilder {
+        self.config.headers = headers;
+        self
+    }
+
     /// Enable a persistent cookie store for the client.
     ///
     /// Cookies received in responses will be preserved and included in
